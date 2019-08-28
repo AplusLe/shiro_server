@@ -1,0 +1,97 @@
+server:
+  port: 8001
+spring:
+  application:
+    name: 4A
+  http:
+    encoding:
+      charset: utf-8
+      force: true
+      enabled: true
+  main:
+    allow-bean-definition-overriding: true
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://47.101.57.2/dev
+    username: root
+    password: Root@529
+    type: com.alibaba.druid.pool.DruidDataSource
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://47.101.57.2:8000/eureka/
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+  #instance-id: ${spring.cloud.client.ip-address}:${server.port}
+ribbon:
+  MaxAutoRetries: 0
+  ReadTimeout: 60000
+  ConnectTimeout: 30000 #ribbon请求连接的超时时间，默认值2000
+shiro:
+  web:
+    ## 开启shiro web自动化配置，默认开启
+    enabled: false
+  loginUrl: /login.jsp
+  successUrl: /
+  ## 必须要配置为授权的url,否则在无权限的情况下，会找不到未授权url,导致找不到安全管理器（SecurityManager）
+  unauthorizedUrl: null
+  ## session管理方式，true使用shiro提供的session管理，false则使用servlet提供的session管理
+  userNativeSessionManager: false
+  ## 会话管理
+  sessionManager:
+    sessionIdCookieEnabled: true
+    sessionIdUrlRewritingEnabled: true
+    deleteInvalidSessions: true
+    cookie:
+      name: JSESSIONID
+      maxAge: -1
+      domain: null
+      path: null
+      secure: false
+  ##
+  rememberMeManager:
+    cookie:
+      name: rememberMe
+      ## 默认一年
+      #maxAge: 60 * 60 * 24 * 365
+      domain: null
+      path: null
+      secure: false
+
+mybatis-plus:
+  # 如果是放在src/main/java目录下 classpath:/com/yourpackage/*/mapper/*Mapper.xml
+  # 如果是放在resource目录 classpath:/mapper/*Mapper.xml
+  mapper-locations: classpath:/mapper/*/*.xml
+  #实体扫描，多个package用逗号或者分号分隔
+  #  typeAliasesPackage: com.yourpackage.*.entity
+  global-config:
+    #字段策略 0:"忽略判断",1:"非 NULL 判断"),2:"非空判断"
+    field-strategy: 0
+    #主键类型  0:"数据库ID自增", 1:"用户输入ID",2:"全局唯一ID (数字类型唯一ID)", 3:"全局唯一ID UUID";
+    #    id-type: 3
+    #驼峰下划线转换
+    db-column-underline: true
+    #mp2.3+ 全局表前缀 mp_
+    #table-prefix: mp_
+    #刷新mapper 调试神器
+    #refresh-mapper: true
+    #数据库大写下划线转换
+    capital-mode: true
+    # Sequence序列接口实现类配置
+    #    key-generator: com.baomidou.mybatisplus.incrementer.OracleKeyGenerator
+    #逻辑删除配置（下面3个配置）
+    db-config:
+      #      用户输入ID,该类型可以通过自己注册自动填充插件进行填充
+      id-type: input
+  #    logic-delete-value: 1
+  #    logic-not-delete-value: 0
+  #    sql-injector: com.baomidou.mybatisplus.mapper.LogicSqlInjector
+  #    #自定义填充策略接口实现
+  #    meta-object-handler: com.baomidou.springboot.MyMetaObjectHandler
+  configuration:
+    #配置返回数据库(column下划线命名&&返回java实体是驼峰命名)，自动匹配无需as（没开启这个，SQL需要写as： select user_id as userId）
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+    #配置JdbcTypeForNull, oracle数据库必须配置
+    jdbc-type-for-null: 'null'

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="aplus.four_a.shiro_server.authorize.mapper.UserInfoMapper">
+
+    <select id="getRoles" resultType="aplus.four_a.shiro_server.authorize.entity.UserRole">
+      select *
+      from user_role  t
+      where t.id in
+      (select r.role_id
+      from role_user r where user_id = #{id})
+    </select>
+</mapper>
